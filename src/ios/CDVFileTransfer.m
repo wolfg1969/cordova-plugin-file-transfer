@@ -209,7 +209,11 @@ static CFIndex WriteDataToStream(NSData* data, CFWriteStreamRef stream)
         }
 
         [postBodyBeforeFile appendData:formBoundaryData];
-        [postBodyBeforeFile appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+        if ([key isEqualToString:@"youtube"]) {
+            [postBodyBeforeFile appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"file.json\"\r\n\r\nContent-Type: application/json\r\n\r\n", @""] dataUsingEncoding:NSUTF8StringEncoding ]];
+        } else {
+            [postBodyBeforeFile appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
         [postBodyBeforeFile appendData:[val dataUsingEncoding:NSUTF8StringEncoding]];
         [postBodyBeforeFile appendData:[@"\r\n" dataUsingEncoding : NSUTF8StringEncoding]];
     }
